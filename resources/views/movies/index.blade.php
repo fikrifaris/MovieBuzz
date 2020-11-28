@@ -5,6 +5,8 @@
 
 <h2>MOVIES</h2>
 
+<button class="btn btn-primary"><a href="{{ route('movies.create') }}">Add</a></button>
+
 <table class="table display" id="movie_table">
     <thead>
       <tr>
@@ -25,10 +27,11 @@
       
       <tr>
         <td>{{ $movies->id }}</td>
-        <td><a href="{{ route('movies.edit', $movies->id) }}">{{ $movies->title }}</a></td>
+        <td>{{ $movies->title }}</td>
         <td>{{ $movies->genres->name}}</td>
         <td>{{ $movies->released_date }}</td>
         <td>{{ $movies->created_at }}</td>
+        <td><button type="button"><a href="{{ route('movies.edit', $movies->id) }}">Edit</a></button><button><a href="{{ route('movies.destroy', $movies->id) }}">Delete</a></button></td>
       </tr>
 
       @endforeach
