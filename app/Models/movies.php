@@ -14,6 +14,11 @@ class movies extends Model
         'genre',
         'released_date'
     ];
+
+    public function genres()
+        {
+            return $this->belongsTo('App\Models\genre', 'genre', 'id');
+        }
     
     
 }

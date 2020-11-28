@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\movies;
+use App\Models\genre;
+use Carbon\Carbon;
 
 class MoviesController extends Controller
 {
@@ -28,7 +30,9 @@ class MoviesController extends Controller
     public function create()
     {
         //
-         return view('movies.create');
+        $genres = genre::pluck('name', 'id')->all();
+
+         return view('movies.create', compact('genres'));
     }
 
     /**
@@ -40,7 +44,16 @@ class MoviesController extends Controller
     public function store(Request $request)
     {
         //
+       
+        $input = $request->all();
+        $released_date = str_replace("-", "", $input['released_date']);
+        $input['released_date'] = Carbon::parse($released_date)->format('Y-m-d');
+        $request->replace($input);
+
+        $input = $request->all();
+
         movies::create($request->all());
+       
 
         return redirect('movies');
     }
@@ -65,6 +78,11 @@ class MoviesController extends Controller
     public function edit($id)
     {
         //
+        $movies = movies::findOrFail($id);
+
+        $genres = genre::pluck('name', 'id')->all();
+
+        return view('movies.edit',compact('movies','genres'));
     }
 
     /**
@@ -77,6 +95,18 @@ class MoviesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $movies = movies::findOrFail($id);
+
+        $input = $request->all();
+        $released_date = str_replace("-", "", $input['released_date']);
+        $input['released_date'] = Carbon::parse($released_date)->format('Y-m-d');
+        $request->replace($input);
+
+        $input = $request->all();
+
+        $movies->update($input);
+
+        return redirect('movies');
     }
 
     /**

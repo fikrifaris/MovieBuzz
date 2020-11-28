@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
 <h1>Welcome! This is the Movies page</h1>
@@ -25,8 +25,8 @@
       
       <tr>
         <td>{{ $movies->id }}</td>
-        <td>{{ $movies->title }}</td>
-        <td>{{ $movies->genre }}</td>
+        <td><a href="{{ route('movies.edit', $movies->id) }}">{{ $movies->title }}</a></td>
+        <td>{{ $movies->genres->name}}</td>
         <td>{{ $movies->released_date }}</td>
         <td>{{ $movies->created_at }}</td>
       </tr>
