@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\movies;
+use App\Http\Controllers\MoviesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +15,7 @@ use App\Models\movies;
 */
 
 Route::get('/', function () {
-
-  $movies = movies::all();
-
-    foreach($movies as $movies) {
-        return $movies;
-    }
-
     return view('index');
 });
+
+Route::resource('movies', 'MoviesController');
