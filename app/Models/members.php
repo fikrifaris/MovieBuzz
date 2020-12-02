@@ -9,6 +9,8 @@ class members extends Model
 {
     use HasFactory;
 
+    protected $table = "members";
+
      protected $fillable = [
 
         'name',
@@ -17,4 +19,5 @@ class members extends Model
         'telephone',
         'identity_number'
     ];
+
 }

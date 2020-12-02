@@ -9,6 +9,8 @@ class movies extends Model
 {
     use HasFactory;
 
+    protected $table = "movies";
+
     protected $fillable = [
         'title',
         'genre',
@@ -19,6 +21,5 @@ class movies extends Model
         {
             return $this->belongsTo('App\Models\genre', 'genre', 'id');
         }
-    
-    
+
 }

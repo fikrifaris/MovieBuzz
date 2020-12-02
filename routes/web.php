@@ -1,7 +1,9 @@
 <?php
-
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\MembersController;
+use App\Http\Controllers\LendingController;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +21,7 @@ Route::get('/', function () {
 });
 
 Route::resource('movies', 'MoviesController');
+
+Route::resource('members', 'MembersController');
+
+Route::resource('lending', 'LendingController');

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use App\Models\movies;
+use App\Models\members;
+use App\Models\lending;
+use Carbon\Carbon;
 
 class LendingController extends Controller
 {
@@ -14,6 +19,16 @@ class LendingController extends Controller
     public function index()
     {
         //
+        $lending = lending::all();
+        $movies = movies::pluck('title', 'id')->all();
+        $members = members::pluck('name', 'id')->all();
+
+  
+        $active = \DB::select('select name, id from members where is_active = ?', [1]);
+        $act_member = Arr::pluck($active, 'name', 'id');
+      
+
+        return view('lending.index', compact('lending', 'movies', 'members', 'act_member'));
     }
 
     /**
@@ -35,6 +50,18 @@ class LendingController extends Controller
     public function store(Request $request)
     {
         //
+         $input = $request->all();
+        $lending_date = str_replace("-", "", $input['lending_date']);
+        $input['lending_date'] = Carbon::parse($lending_date)->format('Y-m-d');
+        $request->replace($input);
+
+        $lending = new lending();
+        $lending->movie_id = $request->movies;
+        $lending->member_id = $request->members;
+        $lending->lending_date = $request->lending_date;
+        $lending->lateness_charge = $request->lateness_charge;
+        $lending->save();
+        return response()->json($lending);
     }
 
     /**
@@ -57,6 +84,12 @@ class LendingController extends Controller
     public function edit($id)
     {
         //
+        $lending = lending::findorFail($id);
+        $movies = movies::pluck('title', 'id')->all();
+        $members = members::pluck('name', 'id')->all();
+
+
+        return response()->json($lending);
     }
 
     /**
@@ -69,6 +102,19 @@ class LendingController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $lending = lending::findorFail($request->id);
+        
+        $input = $request->all();
+        $lending_date = str_replace("-", "", $input['lending_date']);
+        $input['lending_date'] = Carbon::parse($lending_date)->format('Y-m-d');
+        $request->replace($input);
+
+        $lending->movie_id = $request->movies;
+        $lending->member_id = $request->members;
+        $lending->lending_date = $request->lending_date;
+        $lending->lateness_charge = $request->lateness_charge;
+        $lending->save();
+        return response()->json($lending);
     }
 
     /**
@@ -80,5 +126,8 @@ class LendingController extends Controller
     public function destroy($id)
     {
         //
+        lending::findorFail($id)->delete();
+
+        return response()->json(['success'=>'Record has been deleted']);
     }
 }

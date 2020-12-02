@@ -18,8 +18,9 @@ class MoviesController extends Controller
     {
 
         $movies = movies::all();
+        $genres = genre::pluck('name', 'id')->all();
 
-        return view('movies.index', compact('movies'));
+        return view('movies.index', compact('movies', 'genres'));
     }
 
     /**
@@ -30,9 +31,6 @@ class MoviesController extends Controller
     public function create()
     {
         //
-        $genres = genre::pluck('name', 'id')->all();
-
-         return view('movies.create', compact('genres'));
     }
 
     /**
@@ -50,12 +48,16 @@ class MoviesController extends Controller
         $input['released_date'] = Carbon::parse($released_date)->format('Y-m-d');
         $request->replace($input);
 
-        $input = $request->all();
+        
+        // $input = $request->all();
+        // movies::create($request->all());
 
-        movies::create($request->all());
-       
-
-        return redirect('movies');
+        $movies = new movies();
+        $movies->title = $request->title;
+        $movies->genre = $request->genre;
+        $movies->released_date = $request->released_date;
+        $movies->save();
+        return response()->json($movies);
     }
 
     /**
@@ -78,11 +80,10 @@ class MoviesController extends Controller
     public function edit($id)
     {
         //
-        $movies = movies::findOrFail($id);
+        $movies = movies::findorFail($id);
+         $genres = genre::pluck('name', 'id')->all();
 
-        $genres = genre::pluck('name', 'id')->all();
-
-        return view('movies.edit',compact('movies','genres'));
+        return response()->json($movies);
     }
 
     /**
@@ -95,18 +96,18 @@ class MoviesController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $movies = movies::findOrFail($id);
-
+        $movies = movies::findorFail($request->id);
+        
         $input = $request->all();
         $released_date = str_replace("-", "", $input['released_date']);
         $input['released_date'] = Carbon::parse($released_date)->format('Y-m-d');
         $request->replace($input);
 
-        $input = $request->all();
-
-        $movies->update($input);
-
-        return redirect('movies');
+        $movies->title = $request->title;
+        $movies->genre = $request->genre;
+        $movies->released_date = $request->released_date;
+        $movies->save();
+        return response()->json($movies);
     }
 
     /**
@@ -118,8 +119,8 @@ class MoviesController extends Controller
     public function destroy($id)
     {
         //
-        movies::findOrFail($id)->delete();
+        movies::findorFail($id)->delete();
 
-        return redirect('movies');
+        return response()->json(['success'=>'Record has been deleted']);
     }
 }
