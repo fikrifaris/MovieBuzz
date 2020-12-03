@@ -67,23 +67,23 @@
           @csrf
           <div class="form-group">
             <label for="title">Name</label>
-            <input type="text" class="form-control" id="name"/>
+            <input type="text" class="form-control" id="name" placeholder="Enter Name"/>
           </div>
           <div class="form-group">
             <label for="title">Age</label>
-            <input type="text" class="form-control" id="age"/>
+            <input type="text" class="form-control" id="age" placeholder="Enter Age"/>
           </div>
           <div class="form-group">
             <label for="title">Address</label>
-            <input type="text" class="form-control" id="address"/>
+            <input type="text" class="form-control" id="address" placeholder="Enter Address"/>
           </div>
           <div class="form-group">
             <label for="title">Telephone</label>
-            <input type="text" class="form-control" id="telephone"/>
+            <input type="text" class="form-control" id="telephone" placeholder="Enter Telephone Number"/>
           </div>
           <div class="form-group">
             <label for="title">Identity number</label>
-            <input type="text" class="form-control" id="identity_number"/>
+            <input type="text" class="form-control" id="identity_number" placeholder="Enter Identity Number"/>
           </div>
           <button type="submit" id="submit" class="btn btn-primary">Submit</button>
         </form>

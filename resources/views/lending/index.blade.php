@@ -71,7 +71,7 @@
           </div>
           <div class="form-group">
             <label for="lending_date">Lending Date</label>
-            <input type="text" class="form-control datepicker" id="lending_date"/>
+            <input type="text" class="form-control datepicker" id="lending_date" placeholder="Select Date"/>
           </div>
           <div class="form-group">
             <label for="lateness_charge">lateness_charge</label>

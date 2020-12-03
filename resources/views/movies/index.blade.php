@@ -59,7 +59,7 @@
           @csrf
           <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" id="title"/>
+            <input type="text" class="form-control" id="title" placeholder="Enter Movie Title"/>
           </div>
           <div class="form-group">
             <label for="genre">Genre</label>
@@ -67,7 +67,7 @@
           </div>
           <div class="form-group">
             <label for="released_date">Released Date</label>
-            <input type="text" class="form-control datepicker" id="released_date"/>
+            <input type="text" class="form-control datepicker" id="released_date" placeholder="Select Date"/>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -92,14 +92,23 @@
           <input type="hidden" id="id" name="id">
           <div class="form-group">
             <label for="title">Title</label>
+            @error('title')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
             <input type="text" class="form-control" id="title2"/>
           </div>
           <div class="form-group">
             <label for="genre">Genre</label>
+            @error('genre')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
             {!! Form::select('genre', [''=>'Choose Genre'] + $genres, null, ['class'=>'form-control', 'id'=>'genre2']) !!}
           </div>
           <div class="form-group">
             <label for="released_date">Released Date</label>
+            @error('released_date')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
             <input type="text" class="form-control datepicker" id="released_date2"/>
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
@@ -140,6 +149,8 @@
         let genre = $("#genre").val();
         let released_date = $("#released_date").val();
         let _token = $("input[name=_token]").val();
+
+        $('#titleError').addClass('d-none');
 
         $.ajax({
           url: "{{route('movies.store')}}",
