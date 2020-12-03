@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Welcome! This is the Movies page</h1>
+<section class="col-md-12 movie-head">
+<h1>Movies</h1>
+</section>
 
-<section style="padding-top:60px">
+<section class="movies">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            Movies <a href="#" class="btn btn-success"  data-toggle="modal" data-target="#moviesModal">Add New Movies</a>
+            <a href="#" class="btn btn-success"  data-toggle="modal" data-target="#moviesModal">Add New Movies</a>
           </div>
           <div class="card-body">
             <table id="movie_table" class="table">
@@ -156,6 +158,11 @@
               $("#movieForm")[0].reset();
               $("#moviesModal").modal('hide');
             }
+            Swal.fire(
+          'Success!',
+          'Movie Added',
+          'success'
+        )
           }
         });
       });
@@ -199,6 +206,11 @@
             $('#sid' + response.id +' td:nth-child(3)').text(response.released_date);
             $("#editMoviesModal").modal('toggle');
             $("#editMovieForm")[0].reset();
+            Swal.fire(
+          'Success!',
+          'Movie Updated',
+          'success'
+        )
           }
         });
       });
@@ -208,9 +220,23 @@
     <script>
       function deleteMovie(id)
       {
-        if(confirm("Do you really want to delete this record?"))
-        {
-          $.ajax({
+
+                    Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire(
+                  'Deleted!',
+                  'Movies has been deleted.',
+                  'success'
+                )
+                $.ajax({
             url:'/movies/'+id,
             type:'DELETE',
             data:{
@@ -221,7 +247,8 @@
               $("#sid"+id).remove();
             }
           });
-        }
+              }
+            })
       }
     </script>
 @endsection

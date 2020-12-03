@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Welcome! This is the Members page</h1>
+<section class="col-md-12 member-head">
+<h1>Members</h1>
+</section>
 
-<section style="padding-top:60px">
+<section class="member">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -178,13 +180,11 @@
           $("#membersForm")[0].reset();
           $("#membersModal").modal('hide');
         }
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Success',
-          showConfirmButton: false,
-          timer: 1500
-        })
+        Swal.fire(
+          'Success!',
+          'Member Added',
+          'success'
+        )
       }
     });
   });
@@ -239,7 +239,13 @@
         $('#sid' + response.id + ' td:nth-child(7)').text(response.is_active);
         $("#editMembersModal").modal('toggle');
         $("#editMembersForm")[0].reset();
+        Swal.fire(
+          'Success!',
+          'Member Updated',
+          'success'
+        )
       }
+      
     });
   });
   </script>
@@ -249,9 +255,22 @@
     <script>
       function deleteMembers(id)
       {
-        if(confirm("Do you really want to delete this record?"))
-        {
-          $.ajax({
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Deleted!',
+                'Member has been deleted.',
+                'success'
+              )
+               $.ajax({
             url:'/members/'+id,
             type:'DELETE',
             data:{
@@ -260,14 +279,11 @@
             success:function(response)
             {
               $("#sid"+id).remove();
-               Swal.fire(
-              'Remind!',
-              'Company deleted successfully!',
-              'success'
-            )
+               
             }
           });
-        }
+            }
+          })
       }
     </script>
 @endsection

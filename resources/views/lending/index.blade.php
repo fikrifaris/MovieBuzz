@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Welcome! This is the Lending page</h1>
+<section class="col-md-12 lend-head">
+<h1>Lending</h1>
+</section>
 
-<section style="padding-top:60px">
+<section class="lending">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -168,6 +170,11 @@
               $("#lend_table tbody").prepend('<tr><td>'+ response.id+'</td><td>'+ response.members +'</td><td>'+ response.movies +'</td><td>'+ response.lending_date +'</td><td>'+ response.lateness_charge +'</td><td>'+ response.action +'</td></tr>');
               $("#lendForm")[0].reset();
               $("#lendModal").modal('hide');
+              Swal.fire(
+          'Success!',
+          'Movie Lended',
+          'success'
+        )
             }
           }
         });
@@ -215,6 +222,11 @@
             $('#sid' + response.id +' td:nth-child(4)').text(response.lateness_charge);
             $("#editlendModal").modal('toggle');
             $("#editlendForm")[0].reset();
+            Swal.fire(
+          'Success!',
+          'Record Updated',
+          'success'
+        )
           }
         });
       });
@@ -224,9 +236,23 @@
     <script>
       function deleteLend(id)
       {
-        if(confirm("Do you really want to delete this record?"))
-        {
-          $.ajax({
+
+                    Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire(
+                  'Deleted!',
+                  'Record has been deleted.',
+                  'success'
+                )
+                $.ajax({
             url:'/lending/'+id,
             type:'DELETE',
             data:{
@@ -237,7 +263,8 @@
               $("#sid"+id).remove();
             }
           });
-        }
+              }
+            })
       }
     </script>
 @endsection    
